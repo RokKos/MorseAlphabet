@@ -16,6 +16,8 @@ alphabet = {'A':'.-', 'B':'-...', 'C':'-.-.', 'D':'-..', 'E':'.','F':'..-.',
             '3':'...--', '4':'....-', '5':'.....', '6':'-....', '7':'--...',
             '8':'---..', '9':'----.', '.':'.-.-.-', ',':'--..--', '-':'-....-',
             '?':'..--..', '"':'.--..--.', ':':'---...', '@':'.--.-.'}
+#one unit in seconds
+UNITSEC = 0.25
 
 """
 Funtion that converts text to morse code.
@@ -34,4 +36,31 @@ def TextToMorse(text):
         morse += "||"
 
     return morse
+
+def Beep(units):
+    buzz.on()
+    sleep(units * UNITSEC)
+    buzz.off()
+
+def MorseToBeep(morse):
+    for i in range(len(morse)):
+        #New word
+        if(i < len(morse) - 1 and '|' == morse[i] and '|' == morse[i+1]):
+            sleep(7 * UNITSEC)
+        #new character
+        elif('|' == morse[i]):
+            sleep(3 * UNITSEC)
+        #Dash
+        elif('-' == morse[i]):
+            Beep(3 * UNITSEC)
+            sleep(1 * UNITSEC)
+        #dot
+        elif('.' == morse[i]):
+            Beep(1 * UNITSEC)
+            sleep(1 * UNITSEC)
+
+    print ("Morse complete")
+
+MorseToBeep(TextToMorse('SOS'))
+MorseToBeep(TextToMorse('Rok Kos'))
         
